@@ -14,9 +14,11 @@ namespace textura
   class Render : GameWindow
   {
     //FIXME: precisei instalar $ brew install mono-libgdiplus
-    Bitmap bitmap = new Bitmap("logoGCG.png");
+    Bitmap bitmap = new Bitmap("sun.jpg");
 
     int texture;
+
+    IcoSphereFactory esfera = new IcoSphereFactory();
 
     public Render(int width, int height) : base(width, height) { }
 
@@ -41,6 +43,8 @@ namespace textura
           OpenTK.Graphics.OpenGL.PixelFormat.Bgra, PixelType.UnsignedByte, data.Scan0);
 
       bitmap.UnlockBits(data);
+
+      esfera.Create(3);
     }
 
     protected override void OnUnload(EventArgs e)
@@ -72,7 +76,8 @@ namespace textura
 
       GL.Enable(EnableCap.Texture2D);
       GL.BindTexture(TextureTarget.Texture2D, texture);
-      DesenhaCubo();
+     // DesenhaCubo();
+      esfera.desenha();
       GL.Disable(EnableCap.Texture2D);
 
       SwapBuffers();
