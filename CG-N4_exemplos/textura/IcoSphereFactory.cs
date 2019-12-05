@@ -1,80 +1,43 @@
-using System;
-using CG_Biblioteca;
-using OpenTK.Graphics.OpenGL;
-using System.Drawing;
-using OpenTK;
 using System.Collections.Generic;
-using System.Drawing.Imaging;
-
+using OpenTK;
+using OpenTK.Graphics.OpenGL;
 namespace textura
 {
-    internal class Esfera : ObjetoAramado
+    public struct Face
     {
-        protected Bitmap bitmap;
-        protected int texture;
-        public void CarregaTextura(String bimapPath)
-        {   
-            this.bitmap = new Bitmap(bimapPath);
-            GL.Hint(HintTarget.PerspectiveCorrectionHint, HintMode.Nicest);
-            GL.GenTextures(1, out this.texture);
-            GL.BindTexture(TextureTarget.Texture2D, this.texture);
-            GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter, (int)TextureMinFilter.Linear);
-            GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter, (int)TextureMagFilter.Linear);
+        public Vector3 V1;
+        public Vector3 V2;
+        public Vector3 V3;
 
-            BitmapData data = bitmap.LockBits(new System.Drawing.Rectangle(0, 0, bitmap.Width, bitmap.Height),
-                ImageLockMode.ReadOnly, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
-
-            GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba, data.Width, data.Height, 0,
-                OpenTK.Graphics.OpenGL.PixelFormat.Bgra, PixelType.UnsignedByte, data.Scan0);
-
-            bitmap.UnlockBits(data);
-        }
-
-        public void RemoveTextura(){
-            GL.DeleteTextures(1, ref texture);
-        }
-
-        public struct Face
+        public Face(Vector3 v1, Vector3 v2, Vector3 v3)
         {
-            public Vector3 V1;
-            public Vector3 V2;
-            public Vector3 V3;
-
-            public Face(Vector3 v1, Vector3 v2, Vector3 v3)
-            {
-                V1 = v1;
-                V2 = v2;
-                V3 = v3;
-            }
+            V1 = v1;
+            V2 = v2;
+            V3 = v3;
         }
+    }
 
-        public struct TexturedVertex
+    public struct TexturedVertex
+    {
+        public const int Size = (4 + 2) * 4; // size of struct in bytes
+
+        public readonly Vector4 _position;
+        public readonly Vector2 _textureCoordinate;
+
+        public TexturedVertex(Vector4 position, Vector2 textureCoordinate)
         {
-            public const int Size = (4 + 2) * 4; // size of struct in bytes
-
-            public readonly Vector4 _position;
-            public readonly Vector2 _textureCoordinate;
-
-            public TexturedVertex(Vector4 position, Vector2 textureCoordinate)
-            {
-                _position = position;
-                _textureCoordinate = textureCoordinate;
-            }
+            _position = position;
+            _textureCoordinate = textureCoordinate;
         }
+    }
 
-        public Esfera(string rotulo, String bitmap=null) : base(rotulo)
-        {
-            this.PrimitivaTipo = PrimitiveType.Triangles;
-            this.PrimitivaTamanho = 1;
-            this.cor = Color.White;
-            this.Create(3);
-        }
-
+    public class IcoSphereFactory
+    {
         private List<Vector3> _points;
         private int _index;
         private Dictionary<long, int> _middlePointIndexCache;
 
-        protected TexturedVertex[] pontosEsfera;
+        protected TexturedVertex[] pontosEsfera; 
         public TexturedVertex[] Create(int recursionLevel)
         {
             _middlePointIndexCache = new Dictionary<long, int>();
@@ -163,8 +126,8 @@ namespace textura
                 vertices.Add(new TexturedVertex(new Vector4(tri.V3, 1), uv3));
             }
 
-            this.pontosEsfera = vertices.ToArray();
-
+            this.pontosEsfera = vertices.ToArray(); 
+            
             return vertices.ToArray();
         }
 
@@ -214,41 +177,23 @@ namespace textura
             uv.X = -(float)((System.Math.Atan2(i.Z, i.X) / System.Math.PI + 1.0f) * 0.5f);
             return uv;
         }
-        protected override void atualizarBbox()
-        {
-            this.bBox = new BBox();
-            Vector4 v = pontosEsfera[0]._position;
-            Ponto4D primeiroPonto = new Ponto4D(v.X, v.Y, v.Z);
-            this.bBox.Atribuir(primeiroPonto);
-            foreach (TexturedVertex ponto in pontosEsfera)
-            {
-                v = ponto._position;
-                Ponto4D p = new Ponto4D(v.X, v.Y, v.Z);
-                this.bBox.Atualizar(p);
-            }
-        }
 
-        protected override void DesenharAramado()
-        {
+        public void desenha(){ 
             GL.LineWidth(1);
             GL.PointSize(1);
             GL.Color3(System.Drawing.Color.White);
-            GL.Enable(EnableCap.Texture2D);
-            GL.BindTexture(TextureTarget.Texture2D, texture);
             GL.Begin(PrimitiveType.Triangles);
             foreach (TexturedVertex ponto in pontosEsfera)
-            {
-                Vector4 ve = ponto._position;
-                Vector2 textura = ponto._textureCoordinate;
-                //GL.Vertex3(ve.X, ve.Y, ve.Z);
-                GL.TexCoord2(textura.X, textura.Y); GL.Vertex3(ve.X, ve.Y, ve.Z);
+            { 
+              Vector4 ve = ponto._position;
+              Vector2 textura = ponto._textureCoordinate;
+                 GL.Vertex3(ve.X, ve.Y, ve.Z);
+               // GL.TexCoord2(textura.X, textura.Y); GL.Vertex3(ve.X, ve.Y, ve.Z);
 
-            }
-            GL.End();
-            GL.Disable(EnableCap.Texture2D);
+                }
+             GL.End();
 
         }
-
 
     }
 }

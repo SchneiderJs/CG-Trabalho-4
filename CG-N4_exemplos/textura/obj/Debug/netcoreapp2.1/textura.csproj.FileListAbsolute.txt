@@ -10,3 +10,6 @@ C:\Users\Artur\Documents\ComputacaoGrafica\Atividade4\CG-Trabalho-4\CG-N4_exempl
 C:\Users\Artur\Documents\ComputacaoGrafica\Atividade4\CG-Trabalho-4\CG-N4_exemplos\textura\bin\Debug\netcoreapp2.1\documentação.XML
 C:\Users\Artur\Documents\ComputacaoGrafica\Atividade4\CG-Trabalho-4\CG-N4_exemplos\textura\obj\Debug\netcoreapp2.1\textura.dll
 C:\Users\Artur\Documents\ComputacaoGrafica\Atividade4\CG-Trabalho-4\CG-N4_exemplos\textura\obj\Debug\netcoreapp2.1\textura.pdb
+c:\Users\Artur\Documents\ComputacaoGrafica\Atividade4\CG-Trabalho-4\CG-N4_exemplos\textura\bin\Debug\netcoreapp2.1\CG_Biblioteca.dll
+c:\Users\Artur\Documents\ComputacaoGrafica\Atividade4\CG-Trabalho-4\CG-N4_exemplos\textura\bin\Debug\netcoreapp2.1\CG_Biblioteca.pdb
+C:\Users\Artur\Documents\ComputacaoGrafica\Atividade4\CG-Trabalho-4\CG-N4_exemplos\textura\obj\Debug\netcoreapp2.1\textura.csproj.CopyComplete

@@ -4,5 +4,8 @@
         <name>textura</name>
     </assembly>
     <members>
+        <member name="F:textura.Objeto.matrizTmpTranslacao">
+            Matrizes temporarias que sempre sao inicializadas com matriz Identidade entao podem ser "static".
+        </member>
     </members>
 </doc>
