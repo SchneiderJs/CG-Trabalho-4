@@ -3,7 +3,6 @@ Fonte: https://github.com/mono/opentk/blob/master/Source/Examples/OpenGL/1.x/Tex
  */
 using System;
 using System.Drawing;
-using System.Drawing.Imaging;
 
 using OpenTK;
 using OpenTK.Graphics.OpenGL;
@@ -16,9 +15,20 @@ namespace textura
     //FIXME: precisei instalar $ brew install mono-libgdiplus
     int texture;
 
-    Esfera esfera = new Esfera("Sol");
-     Esfera esfera2 = new Esfera("Terra");
-     Esfera esfera3 = new Esfera("Lua");
+    Esfera sol = new Esfera("Sol");
+     Esfera terra = new Esfera("Terra");
+     Esfera lua = new Esfera("Lua");
+     double xMin, xMax, yMin, yMax, zMin, zMax;
+
+    public void resetCamera()
+    {
+      xMin = -0.7;
+      xMax = 0.7;
+      yMin = -0.7;
+      yMax = 0.7;
+      zMin = 1;
+      zMax = 0;
+    }
 
     public Render(int width, int height) : base(width, height) { }
 
@@ -29,33 +39,26 @@ namespace textura
       GL.Enable(EnableCap.DepthTest);
       GL.Enable(EnableCap.CullFace);
 
-      //TODO: o que faz está linha abaixo?
-     // GL.Hint(HintTarget.PerspectiveCorrectionHint, HintMode.Nicest);
-      // GL.GenTextures(1, out texture);
-      // GL.BindTexture(TextureTarget.Texture2D, texture);
-      // GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter, (int)TextureMinFilter.Linear);
-      // GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter, (int)TextureMagFilter.Linear);
+      sol.CarregaTextura("sun.jpg");
+      terra.CarregaTextura("earth.bmp");
+      lua.CarregaTextura("moon.png");
 
-      // BitmapData data = bitmap.LockBits(new System.Drawing.Rectangle(0, 0, bitmap.Width, bitmap.Height),
-      //     ImageLockMode.ReadOnly, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
+      sol.EscalaXYZ(0.5,0.5,0.5);
+      terra.EscalaXYZ(0.5,0.5, 0.5);
+      lua.EscalaXYZ(0.5,0.5, 0.5);
 
-      // GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba, data.Width, data.Height, 0,
-      //     OpenTK.Graphics.OpenGL.PixelFormat.Bgra, PixelType.UnsignedByte, data.Scan0);
-
-      // bitmap.UnlockBits(data);
-      esfera.CarregaTextura("sun.jpg");
-      esfera2.CarregaTextura("earth.bmp");
-      esfera3.CarregaTextura("moon.png");
-       //esfera.TranslacaoXY();
-       esfera2.TranslacaoXY(1,1);
-       esfera3.TranslacaoXY(2,2);
+      sol.FilhoAdicionar(terra);
+      terra.FilhoAdicionar(lua);
+      terra.TranslacaoXYZ(6,0,1);
+      lua.TranslacaoXYZ(2,0,1);
+      resetCamera();
     }
 
     protected override void OnUnload(EventArgs e)
     {
-      esfera.RemoveTextura();
-      esfera2.RemoveTextura();
-      esfera3.RemoveTextura();
+      sol.RemoveTextura();
+      terra.RemoveTextura();
+      lua.RemoveTextura();
     }
 
     protected override void OnResize(EventArgs e)
@@ -69,6 +72,7 @@ namespace textura
     protected override void OnUpdateFrame(FrameEventArgs e)
     {
       base.OnUpdateFrame(e);
+      GL.Ortho(xMin,xMax,yMin,yMax,zMin,zMax);
     }
 
     protected override void OnRenderFrame(FrameEventArgs e)
@@ -80,22 +84,22 @@ namespace textura
 
       SRU3D();
 
-     
-     // DesenhaCubo();
-      esfera.Desenhar();
-      esfera2.Desenhar();
-      esfera3.Desenhar();
-      
-
+      Animacao();
+      sol.Desenhar();
       SwapBuffers();
+    }
+
+    public void Animacao()
+    {
+      terra.RotacaoY(0.3);   // em torno do sol
+      terra.RotacaoYBBox(15); // rotacao da terra
+      lua.RotacaoY(-12);
     }
 
     protected override void OnKeyDown(OpenTK.Input.KeyboardKeyEventArgs e)
     {
       if (e.Key == Key.Escape)
         this.Exit();
-      if(e.Key == Key.R)
-         esfera.RotacaoZBBox(4);
       else
         if (e.Key == Key.F)
         GL.CullFace(CullFaceMode.Front);
@@ -106,54 +110,6 @@ namespace textura
         GL.CullFace(CullFaceMode.FrontAndBack);
     }
 
-    protected override void OnMouseMove(MouseMoveEventArgs e)
-    {
-    }
-
-    private void DesenhaCubo()
-    {
-      GL.Color3(Color.White);
-      GL.Begin(PrimitiveType.Quads);
-
-      // Face da frente
-      GL.Normal3(0, 0, 1);
-      GL.TexCoord2(0.0f, 1.0f); GL.Vertex3(-1.0f, -1.0f, 1.0f);
-      GL.TexCoord2(1.0f, 1.0f); GL.Vertex3(1.0f, -1.0f, 1.0f);
-      GL.TexCoord2(1.0f, 0.0f); GL.Vertex3(1.0f, 1.0f, 1.0f);
-      GL.TexCoord2(0.0f, 0.0f); GL.Vertex3(-1.0f, 1.0f, 1.0f);
-      // Face do fundo
-      GL.Normal3(0, 0, -1);
-      GL.TexCoord2(0.0f, 1.0f); GL.Vertex3(-1.0f, -1.0f, -1.0f);
-      GL.TexCoord2(1.0f, 1.0f); GL.Vertex3(-1.0f, 1.0f, -1.0f);
-      GL.TexCoord2(1.0f, 0.0f); GL.Vertex3(1.0f, 1.0f, -1.0f);
-      GL.TexCoord2(0.0f, 0.0f); GL.Vertex3(1.0f, -1.0f, -1.0f);
-      // Face de cima
-      GL.Normal3(0, 1, 0);
-      GL.TexCoord2(0.0f, 1.0f); GL.Vertex3(-1.0f, 1.0f, 1.0f);
-      GL.TexCoord2(1.0f, 1.0f); GL.Vertex3(1.0f, 1.0f, 1.0f);
-      GL.TexCoord2(1.0f, 0.0f); GL.Vertex3(1.0f, 1.0f, -1.0f);
-      GL.TexCoord2(0.0f, 0.0f); GL.Vertex3(-1.0f, 1.0f, -1.0f);
-      // Face de baixo
-      GL.Normal3(0, -1, 0);
-      GL.TexCoord2(0.0f, 1.0f); GL.Vertex3(-1.0f, -1.0f, 1.0f);
-      GL.TexCoord2(1.0f, 1.0f); GL.Vertex3(-1.0f, -1.0f, -1.0f);
-      GL.TexCoord2(1.0f, 0.0f); GL.Vertex3(1.0f, -1.0f, -1.0f);
-      GL.TexCoord2(0.0f, 0.0f); GL.Vertex3(1.0f, -1.0f, 1.0f);
-      // Face da direita
-      GL.Normal3(1, 0, 0);
-      GL.TexCoord2(0.0f, 1.0f); GL.Vertex3(1.0f, -1.0f, 1.0f);
-      GL.TexCoord2(1.0f, 1.0f); GL.Vertex3(1.0f, -1.0f, -1.0f);
-      GL.TexCoord2(1.0f, 0.0f); GL.Vertex3(1.0f, 1.0f, -1.0f);
-      GL.TexCoord2(0.0f, 0.0f); GL.Vertex3(1.0f, 1.0f, 1.0f);
-      // Face da esquerda
-      GL.Normal3(-1, 0, 0);
-      GL.TexCoord2(0.0f, 1.0f); GL.Vertex3(-1.0f, -1.0f, 1.0f);
-      GL.TexCoord2(1.0f, 1.0f); GL.Vertex3(-1.0f, 1.0f, 1.0f);
-      GL.TexCoord2(1.0f, 0.0f); GL.Vertex3(-1.0f, 1.0f, -1.0f);
-      GL.TexCoord2(0.0f, 0.0f); GL.Vertex3(-1.0f, -1.0f, -1.0f);
-
-      GL.End();
-    }
 
     private void SRU3D()
     {

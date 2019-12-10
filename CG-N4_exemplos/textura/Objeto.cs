@@ -118,10 +118,28 @@ namespace textura
       matriz = matrizTranslate.MultiplicarMatriz(matriz);
       atualizarBbox();
     }
+
+    public  void TranslacaoXYZ(double tx, double ty, double tz)
+    {
+      Transformacao4D matrizTranslate = new Transformacao4D();
+      matrizTranslate.AtribuirTranslacao(tx, ty, tz);
+      matriz = matrizTranslate.MultiplicarMatriz(matriz);
+      atualizarBbox();
+
+    }
     public void EscalaXY(double Sx, double Sy)
     {
       Transformacao4D matrizScale = new Transformacao4D();
       matrizScale.AtribuirEscala(Sx, Sy, 1.0);
+      matriz = matrizScale.MultiplicarMatriz(matriz);
+      atualizarBbox();
+      this.atualizarMatrizFilhos();
+    }
+
+    public void EscalaXYZ(double Sx, double Sy, double Sz)
+    {
+      Transformacao4D matrizScale = new Transformacao4D();
+      matrizScale.AtribuirEscala(Sx, Sy, Sz);
       matriz = matrizScale.MultiplicarMatriz(matriz);
       atualizarBbox();
       this.atualizarMatrizFilhos();
@@ -153,6 +171,24 @@ namespace textura
       atualizarBbox();
       this.atualizarMatrizFilhos();
     }
+
+    public void RotacaoX(double angulo)
+    {
+      matrizTmpRotacao.AtribuirRotacaoX(Transformacao4D.DEG_TO_RAD * angulo);
+      matriz = matrizTmpRotacao.MultiplicarMatriz(matriz);
+      atualizarBbox();
+      this.atualizarMatrizFilhos();
+    }
+
+    public void RotacaoY(double angulo)
+    {
+      matrizTmpRotacao.AtribuirRotacaoY(Transformacao4D.DEG_TO_RAD * angulo);
+      matriz = matrizTmpRotacao.MultiplicarMatriz(matriz);
+      atualizarBbox();
+      this.atualizarMatrizFilhos();
+    }
+
+
     public void RotacaoZBBox(double angulo)
     {
       matrizGlobal.AtribuirIdentidade();
@@ -162,6 +198,25 @@ namespace textura
       matrizGlobal = matrizTmpTranslacao.MultiplicarMatriz(matrizGlobal);
 
       matrizTmpRotacao.AtribuirRotacaoZ(Transformacao4D.DEG_TO_RAD * angulo);
+      matrizGlobal = matrizTmpRotacao.MultiplicarMatriz(matrizGlobal);
+
+      matrizTmpTranslacaoInversa.AtribuirTranslacao(pontoPivo.X, pontoPivo.Y, pontoPivo.Z);
+      matrizGlobal = matrizTmpTranslacaoInversa.MultiplicarMatriz(matrizGlobal);
+
+      matriz = matriz.MultiplicarMatriz(matrizGlobal);
+      atualizarBbox();
+      this.atualizarMatrizFilhos();
+    }
+
+    public void RotacaoYBBox(double angulo)
+    {
+      matrizGlobal.AtribuirIdentidade();
+      Ponto4D pontoPivo = bBox.obterCentro;
+
+      matrizTmpTranslacao.AtribuirTranslacao(-pontoPivo.X, -pontoPivo.Y, -pontoPivo.Z); // Inverter sinal
+      matrizGlobal = matrizTmpTranslacao.MultiplicarMatriz(matrizGlobal);
+
+      matrizTmpRotacao.AtribuirRotacaoY(Transformacao4D.DEG_TO_RAD * angulo);
       matrizGlobal = matrizTmpRotacao.MultiplicarMatriz(matrizGlobal);
 
       matrizTmpTranslacaoInversa.AtribuirTranslacao(pontoPivo.X, pontoPivo.Y, pontoPivo.Z);
