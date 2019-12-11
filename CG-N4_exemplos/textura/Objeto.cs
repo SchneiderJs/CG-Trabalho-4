@@ -44,6 +44,10 @@ namespace textura
       return this.objetoPai;
     }
 
+    public Transformacao4D GetMatriz(){
+      return this.matriz.MultiplicarMatriz(this.matrizMundo);
+    }
+
     protected void atualizarMatrizFilhos(){
       Transformacao4D tempMundoFilho = this.matriz.MultiplicarMatriz(this.matrizMundo);
       foreach(Objeto obj in this.objetosLista){
@@ -164,6 +168,26 @@ namespace textura
       atualizarBbox();
       this.atualizarMatrizFilhos();
     }
+    public void EscalaXYZBBox(double escala)
+    {
+      matrizGlobal.AtribuirIdentidade();
+      Ponto4D pontoPivo = bBox.obterCentro;
+      pontoPivo.ToString();
+
+      matrizTmpTranslacao.AtribuirTranslacao(-pontoPivo.X, -pontoPivo.Y, -pontoPivo.Z); // Inverter sinal
+      matrizGlobal = matrizTmpTranslacao.MultiplicarMatriz(matrizGlobal);
+
+      matrizTmpEscala.AtribuirEscala(escala, escala, escala);
+      matrizGlobal = matrizTmpEscala.MultiplicarMatriz(matrizGlobal);
+
+      matrizTmpTranslacaoInversa.AtribuirTranslacao(pontoPivo.X, pontoPivo.Y, pontoPivo.Z);
+      matrizGlobal = matrizTmpTranslacaoInversa.MultiplicarMatriz(matrizGlobal);
+
+      matriz = matriz.MultiplicarMatriz(matrizGlobal);
+      atualizarBbox();
+      this.atualizarMatrizFilhos();
+    }
+
     public void RotacaoZ(double angulo)
     {
       matrizTmpRotacao.AtribuirRotacaoZ(Transformacao4D.DEG_TO_RAD * angulo);

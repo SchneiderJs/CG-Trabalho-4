@@ -1,0 +1,15 @@
+C:\Users\Artur\Documents\ComputacaoGrafica\Atividade4\CG-Trabalho-4\CG-N4_exemplos\Iluminacao\bin\Debug\netcoreapp2.1\Iluminacao.deps.json
+C:\Users\Artur\Documents\ComputacaoGrafica\Atividade4\CG-Trabalho-4\CG-N4_exemplos\Iluminacao\bin\Debug\netcoreapp2.1\Iluminacao.runtimeconfig.json
+C:\Users\Artur\Documents\ComputacaoGrafica\Atividade4\CG-Trabalho-4\CG-N4_exemplos\Iluminacao\bin\Debug\netcoreapp2.1\Iluminacao.runtimeconfig.dev.json
+c:\Users\Artur\Documents\ComputacaoGrafica\Atividade4\CG-Trabalho-4\CG-N4_exemplos\Iluminacao\bin\Debug\netcoreapp2.1\Iluminacao.dll
+c:\Users\Artur\Documents\ComputacaoGrafica\Atividade4\CG-Trabalho-4\CG-N4_exemplos\Iluminacao\bin\Debug\netcoreapp2.1\Iluminacao.pdb
+c:\Users\Artur\Documents\ComputacaoGrafica\Atividade4\CG-Trabalho-4\CG-N4_exemplos\Iluminacao\bin\Debug\netcoreapp2.1\documentação.XML
+c:\Users\Artur\Documents\ComputacaoGrafica\Atividade4\CG-Trabalho-4\CG-N4_exemplos\Iluminacao\obj\Debug\netcoreapp2.1\Iluminacao.csprojAssemblyReference.cache
+c:\Users\Artur\Documents\ComputacaoGrafica\Atividade4\CG-Trabalho-4\CG-N4_exemplos\Iluminacao\obj\Debug\netcoreapp2.1\Iluminacao.csproj.CoreCompileInputs.cache
+c:\Users\Artur\Documents\ComputacaoGrafica\Atividade4\CG-Trabalho-4\CG-N4_exemplos\Iluminacao\obj\Debug\netcoreapp2.1\Iluminacao.AssemblyInfoInputs.cache
+c:\Users\Artur\Documents\ComputacaoGrafica\Atividade4\CG-Trabalho-4\CG-N4_exemplos\Iluminacao\obj\Debug\netcoreapp2.1\Iluminacao.AssemblyInfo.cs
+c:\Users\Artur\Documents\ComputacaoGrafica\Atividade4\CG-Trabalho-4\CG-N4_exemplos\Iluminacao\obj\Debug\netcoreapp2.1\Iluminacao.dll
+c:\Users\Artur\Documents\ComputacaoGrafica\Atividade4\CG-Trabalho-4\CG-N4_exemplos\Iluminacao\obj\Debug\netcoreapp2.1\Iluminacao.pdb
+c:\Users\Artur\Documents\ComputacaoGrafica\Atividade4\CG-Trabalho-4\CG-N4_exemplos\Iluminacao\bin\Debug\netcoreapp2.1\CG_Biblioteca.dll
+c:\Users\Artur\Documents\ComputacaoGrafica\Atividade4\CG-Trabalho-4\CG-N4_exemplos\Iluminacao\bin\Debug\netcoreapp2.1\CG_Biblioteca.pdb
+C:\Users\Artur\Documents\ComputacaoGrafica\Atividade4\CG-Trabalho-4\CG-N4_exemplos\Iluminacao\obj\Debug\netcoreapp2.1\Iluminacao.csproj.CopyComplete

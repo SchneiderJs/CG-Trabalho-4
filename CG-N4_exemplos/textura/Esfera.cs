@@ -240,9 +240,7 @@ namespace textura
             {
                 Vector4 ve = ponto._position;
                 Vector2 textura = ponto._textureCoordinate;
-                //GL.Vertex3(ve.X, ve.Y, ve.Z);
                 GL.TexCoord2(textura.X, textura.Y); GL.Vertex3(ve.X, ve.Y, ve.Z);
-
             }
             GL.End();
             GL.Disable(EnableCap.Texture2D);
